@@ -57,15 +57,6 @@
     [self.view addSubview:webView];
 
     // Create a URL input field on the navigation bar
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 30)];
-    [textField setBorderStyle:UITextBorderStyleRoundedRect];
-    [textField setPlaceholder:@"Enter URL"];
-    [textField addTarget:self action:@selector(onEditingDidEnd:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [textField setKeyboardType:UIKeyboardTypeURL];
-    [textField setReturnKeyType:UIReturnKeyGo];
-    [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-    self.navigationItem.titleView = textField;
 
     self.webView = webView;
 
