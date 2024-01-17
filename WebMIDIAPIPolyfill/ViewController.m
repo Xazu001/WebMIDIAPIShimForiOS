@@ -48,22 +48,30 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+  [super viewDidLoad];
 
     _midiDriver = [[MIDIDriver alloc] init];
+    
+    // Utwórz konfigurację dla WebView z użyciem MIDIDriver
     WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
 
+    // Utwórz WKWebsiteDataStore z odpowiednią konfiguracją do dostępu do localStorage
+    WKWebsiteDataStore *dataStore = [WKWebsiteDataStore nonPersistentDataStore];
+    
+    // Przypisz WKWebsiteDataStore do konfiguracji WebView
+    configuration.websiteDataStore = dataStore;
+
+    // Utwórz WebView z konfiguracją
     MIDIWebView *webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
     [self.view addSubview:webView];
 
-    // Create a URL input field on the navigation bar
+    // Przypisz WebView do właściwości webView w ViewController
     self.webView = webView;
 
-   // Open a specific URL
-NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
-NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
-
-[_webView loadRequest:request];
+    // Otwórz określony URL
+    NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
+    [_webView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning
