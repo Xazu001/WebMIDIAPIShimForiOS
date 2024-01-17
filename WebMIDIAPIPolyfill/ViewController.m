@@ -55,12 +55,6 @@
     // Utwórz konfigurację dla WebView z użyciem MIDIDriver
     WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
 
-    // Utwórz WKWebsiteDataStore z odpowiednią konfiguracją do dostępu do localStorage
-    WKWebsiteDataStore *dataStore = [WKWebsiteDataStore nonPersistentDataStore];
-    
-    // Przypisz WKWebsiteDataStore do konfiguracji WebView
-    configuration.websiteDataStore = dataStore;
-
     // Utwórz WebView z konfiguracją
     MIDIWebView *webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
     [self.view addSubview:webView];
