@@ -57,22 +57,12 @@
     [self.view addSubview:webView];
 
     // Create a URL input field on the navigation bar
-    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 30)];
-    [textField setBorderStyle:UITextBorderStyleRoundedRect];
-    [textField setPlaceholder:@"Enter URL"];
-    [textField addTarget:self action:@selector(onEditingDidEnd:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-    [textField setKeyboardType:UIKeyboardTypeURL];
-    [textField setReturnKeyType:UIReturnKeyGo];
-    [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-    self.navigationItem.titleView = textField;
-
     self.webView = webView;
 
-    // Open sample HTML file at bundle path
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
-    NSString *html = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
-    [_webView loadHTMLString:html baseURL:nil];
+   // Open a specific URL
+NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
+NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
+[_webView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning
