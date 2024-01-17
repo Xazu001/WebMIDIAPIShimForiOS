@@ -46,42 +46,27 @@
 #pragma mark -
 #pragma mark View initializers
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     _midiDriver = [[MIDIDriver alloc] init];
     WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
 
-    MIDIWebView *webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
-    [self.view addSubview:webView];
-
-    // Create a URL input field on the navigation bar
-    self.webView = webView;
-
-   // Open a specific URL
-NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
-NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
-// Utwórz konfigurację WKWebView
-    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
-
-    // Dodaj skrypt do konfiguracji, aby umożliwić dostęp do localStorage
-    WKUserContentController *userContentController = [[WKUserContentController alloc] init];
-    WKUserScript *userScript = [[WKUserScript alloc] initWithSource:@"window.localStorage.setItem('testKey', 'testValue');" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-    [userContentController addUserScript:userScript];
-    configuration.userContentController = userContentController;
-
     // Utwórz WKWebView z konfiguracją
     _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
     [self.view addSubview:_webView];
-    
+
+    // Open a specific URL
+    NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
+
     // Załaduj żądanie
-[_webView loadRequest:request];
+    [_webView loadRequest:request];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 
 @end
