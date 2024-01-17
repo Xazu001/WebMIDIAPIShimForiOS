@@ -62,6 +62,20 @@
    // Open a specific URL
 NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
 NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
+// Utwórz konfigurację WKWebView
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+
+    // Dodaj skrypt do konfiguracji, aby umożliwić dostęp do localStorage
+    WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+    WKUserScript *userScript = [[WKUserScript alloc] initWithSource:@"window.localStorage.setItem('testKey', 'testValue');" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+    [userContentController addUserScript:userScript];
+    configuration.userContentController = userContentController;
+
+    // Utwórz WKWebView z konfiguracją
+    _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
+    [self.view addSubview:_webView];
+    
+    // Załaduj żądanie
 [_webView loadRequest:request];
 }
 
