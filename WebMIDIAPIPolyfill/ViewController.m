@@ -1,4 +1,5 @@
 /*
+ 
  Copyright 2014 Takashi Mizuhiki
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,54 +13,19 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/
+ 
+ */
 
 #import "ViewController.h"
-#import "MIDIWebView.h"  // Dodaj import dla MIDIWebView, jeśli nie został dodany
+#import "WebViewDelegate.h"
 #import "MIDIDriver.h"
 
-@interface ViewController () <WKNavigationDelegate>  // Dodaj protokół WKNavigationDelegate
+@interface ViewController ()
 @property (nonatomic, strong) MIDIDriver *midiDriver;
-@property (nonatomic, strong) MIDIWebView *webView;  // Dodaj deklarację MIDIWebView
 @end
 
 @implementation ViewController
 
-#pragma mark -
-#pragma mark View action handlers
-
-- (void)onEditingDidEnd:(UITextField *)field
-{
-    [self loadURL:[NSURL URLWithString:field.text]];
-}
-
-#pragma mark -
-#pragma mark View initializers
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    _midiDriver = [[MIDIDriver alloc] init];
-    WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
-
-    // Utwórz MIDIWebView z konfiguracją
-    _webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
-    [self.view addSubview:_webView];
-
-    // Open a specific URL
-    NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
-
-    // Załaduj żądanie
-    [_webView loadRequest:request];
-    
-    // Dodaj ViewController jako delegata do obsługi nawigacji
-    _webView.navigationDelegate = self;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
 
 - (void)loadURL:(NSURL *)url
 {
@@ -69,8 +35,40 @@
 }
 
 #pragma mark -
-#pragma mark WKNavigationDelegate methods (jeśli są potrzebne)
+#pragma mark View action handlers
 
-// Implementuj metody delegata WKNavigationDelegate w zależności od potrzeb
+- (void)onEditingDidEnd:(UITextField *)field
+{
+    [self loadURL:[NSURL URLWithString:field.text]];
+}
+
+
+#pragma mark -
+#pragma mark View initializers
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    _midiDriver = [[MIDIDriver alloc] init];
+    WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
+
+    MIDIWebView *webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
+    [self.view addSubview:webView];
+
+    // Create a URL input field on the navigation bar
+    self.webView = webView;
+
+   // Open a specific URL
+NSURL *specificURL = [NSURL URLWithString:@"https://crosspad.app"];
+NSURLRequest *request = [NSURLRequest requestWithURL:specificURL];
+
+[_webView loadRequest:request];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
 
 @end
