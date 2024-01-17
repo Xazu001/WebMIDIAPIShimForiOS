@@ -1,5 +1,4 @@
 /*
- 
  Copyright 2014 Takashi Mizuhiki
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +12,18 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- 
- */
+*/
 
 #import "ViewController.h"
-#import "WebViewDelegate.h"
+#import "MIDIWebView.h"  // Dodaj import dla MIDIWebView, jeśli nie został dodany
 #import "MIDIDriver.h"
 
-@interface ViewController ()
+@interface ViewController () <WKNavigationDelegate>  // Dodaj protokół WKNavigationDelegate
 @property (nonatomic, strong) MIDIDriver *midiDriver;
+@property (nonatomic, strong) MIDIWebView *webView;  // Dodaj deklarację MIDIWebView
 @end
 
 @implementation ViewController
-
-
-- (void)loadURL:(NSURL *)url
-{
-    // Load URL
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [_webView loadRequest:request];
-}
 
 #pragma mark -
 #pragma mark View action handlers
@@ -41,7 +32,6 @@
 {
     [self loadURL:[NSURL URLWithString:field.text]];
 }
-
 
 #pragma mark -
 #pragma mark View initializers
@@ -52,8 +42,8 @@
     _midiDriver = [[MIDIDriver alloc] init];
     WKWebViewConfiguration *configuration = [MIDIWebView createConfigurationWithMIDIDriver:_midiDriver sysexConfirmation:^(NSString *url) { return YES; }];
 
-    // Utwórz WKWebView z konfiguracją
-    _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
+    // Utwórz MIDIWebView z konfiguracją
+    _webView = [[MIDIWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
     [self.view addSubview:_webView];
 
     // Open a specific URL
@@ -62,11 +52,25 @@
 
     // Załaduj żądanie
     [_webView loadRequest:request];
+    
+    // Dodaj ViewController jako delegata do obsługi nawigacji
+    _webView.navigationDelegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+- (void)loadURL:(NSURL *)url
+{
+    // Load URL
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [_webView loadRequest:request];
+}
+
+#pragma mark -
+#pragma mark WKNavigationDelegate methods (jeśli są potrzebne)
+
+// Implementuj metody delegata WKNavigationDelegate w zależności od potrzeb
 
 @end
