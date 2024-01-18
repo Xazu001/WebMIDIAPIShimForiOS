@@ -22,9 +22,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+ UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.window.rootViewController = navigationController;
+
 [[UINavigationBar appearance] setHidden:YES];
-[[UIToolBar appearance] setHidden:YES];
  [navigationController setNavigationBarHidden:YES animated:NO];
 
     return YES;
