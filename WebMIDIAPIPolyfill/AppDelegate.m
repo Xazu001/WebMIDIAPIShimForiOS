@@ -24,6 +24,7 @@
 {
     // Override point for customization after application launch.
 [[UINavigationBar appearance] setHidden:YES];
+[[UIToolBar appearance] setHidden:YES];
 
     return YES;
 }
