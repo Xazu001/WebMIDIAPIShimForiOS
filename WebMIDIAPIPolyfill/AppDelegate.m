@@ -22,15 +22,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
- self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIViewController *viewController = [[YourViewControllerClass alloc] init];
-    
-
- UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    self.window.rootViewController = navigationController;
-
+ 
 [[UINavigationBar appearance] setHidden:YES];
- [navigationController setNavigationBarHidden:YES animated:NO];
+ 
 
     return YES;
 }
